@@ -1,0 +1,31 @@
+{
+  "name": "thatConference-offline",
+  "version": "0.0.1",
+  "private": true,
+  "description": "An example jQuery Mobile offline application for my That Conference presentation",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jgable/thatConference-offline.git"
+  },
+  "keywords": [
+    "jquery",
+    "mobile",
+    "offline",
+    "html5"
+  ],
+  "author": "Jacob Gable",
+  "license": "MIT",
+  "dependencies": {
+    "coffee-script": "~1.3.3",
+    "express": "~3.0.0rc2",
+    "jade": "*"
+  },
+  "devDependencies": {
+    "mocha": "*"
+  }
+}
