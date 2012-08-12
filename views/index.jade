@@ -2,12 +2,21 @@ extends layout
 
 block content
   
-
   div#home(data-role="page")
 
     div(data-role="header")
-        h1 That Conference - Offline
+        h1#homeTitle That Conference
     
     div(data-role="content")
-        p Hello world    
+        h2 Sessions
+        ul#sessionList(data-role="listview")
+
+  div#session(data-role="page")
+
+    div(data-role="header")
+        a(data-rel="back", href="#home", data-icon="arrow-l") Sessions
+        h1#sessionTitle
+
+    div(data-role="content")
+        #sessionDetails
   
