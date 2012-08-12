@@ -15,6 +15,8 @@ head
   // jQuery Mobile
   script(src="//ajax.aspnetcdn.com/ajax/jquery.mobile/1.1.1/jquery.mobile-1.1.1.min.js")
 
+  != js("icanhaz")
+
   != js("mvc-router")
   != js("app")
   != js("offline")
@@ -24,6 +26,12 @@ head
 body
   block content
 
-  block scripts
+// Template for Session Detail
+|<script id="sessionDetail" type="text/html">
+|<h2>{{ Title }}</h2>
+|<p><strong>Room</strong>: {{ ScheduledRoom }}</p>
+|<p><strong>Presenting</strong>: {{#People}}{{FirstName}} {{LastName}}{{/People}}</p>
+|<p>{{ Description }}</p>
+|</script>
 
 |</html>

@@ -143,7 +143,8 @@
                 .then(function(session) {
 
                     // TODO: Template and more detail
-                    detailHtml = "<h2>" + session.Title + "</h2><p>" + session.Description + "</p>";
+                    //detailHtml = "<h2>" + session.Title + "</h2><p>" + session.Description + "</p>";
+                    detailHtml = ich.sessionDetail(session);
 
                     that.$title.text(session.Title);
                     that.$details.html(detailHtml);
