@@ -32,6 +32,10 @@ app.get "/sessions/:id", (req, resp) ->
 
     resp.json found
 
+app.get "/cache.manifest", (req, resp) ->
+    resp.type "test/cache-manifest"
+    resp.render "manifest"
+
 port = process.env.VMC_APP_PORT or 3000
 
 app.listen port, -> console.log "Listening... [#{ port }]"
