@@ -18,6 +18,9 @@ sessionList = ({ id: session.SessionId, name: session.Title, start: new Date(par
 app.get "/sessions/list", (req, resp) ->
     resp.json sessionList
 
+app.get "/sessions/offline", (req, resp) ->
+    resp.json data.Sessions
+
 app.get "/sessions/:id", (req, resp) ->
     sessId = req.param("id")|0
 

@@ -18,8 +18,8 @@ describe "thatConference offline app", ->
 
     describe "session data access", ->
         it "uses a provider model", -> true
-        it "can detect when the app is offline"
-        it "can choose the correct provider to use to get session data when offline"
+        it "can detect when the app is in offline mode"
+        it "can choose the correct provider to use to get session data when in offline mode"
 
     describe "offline mode", ->
         it "downloads data from the server"

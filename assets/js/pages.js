@@ -9,17 +9,69 @@
     HomePage.prototype = {
         // Handle the initial creation of the jQuery Mobile page
         create: function($page) {
+            var that = this;
+
             this.$sessionList = $page.find("#sessionList");
+            this.$offlineToggle = $page.find("#offlineFlip");
+
+            this.$offlineToggle.change(function(evt) {
+                
+                var val = $(this).val();
+                console.log("Toggle Offline: " + val);
+                if(val === "on") {
+                    
+                    $app.helpers.showLoady();
+                    // Go offline
+                    $app.offline.goOffline()
+                        .always($app.helpers.hideLoady)
+                        .then(function() {
+                            
+                            that.init = false;
+                            that.show($page);
+
+                        }, function(msg) {
+                            alert("There was an error going offline: " + msg)
+                        });
+                } else {
+                    
+                    // Go back to web based provider
+                    window.localStorage.setItem("offline", "web");
+                    
+                    that.init = false;
+                    that.show($page);
+                }
+            });
         },
 
         // Handle the page being shown
-        show: function($page) {
+        show: function() {
             
             // If we haven't loaded the sessions yet, load them now
             if (!this.init) {
                 this.loadSessions();
                 this.init = true;
             }
+
+            // Update the state of the offline toggle
+            if(!$app.offline.canGoOffline()) {
+                // Disable the toggle if we can't go offline.
+                this.$offlineToggle.slider({ disabled: true });
+            }
+            if ($app.offline.isOffline()) {
+                var mode = "on";
+                if(this.$offlineToggle.val() !== mode) {
+                   this.$offlineToggle.val(mode);
+                   this.$offlineToggle.slider("refresh");
+                }
+            } 
+
+            /*
+            if(this.$offlineToggle.val() !== mode) {
+               this.$offlineToggle.val(mode);
+               this.$offlineToggle.slider("refresh");
+            }
+            */
+            
         },
 
         // Load sessions from our session provider and fill our listview with them
