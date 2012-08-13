@@ -37,7 +37,7 @@
             this._getSessions()
                 .then(function(sessions) {
                     // TODO: Parse the date here before we pass it back
-                    def.resolve($.map(sessions, function(s) { return { id: s.SessionId, name: s.Title };}))
+                    def.resolve($.map(sessions, function(s) { return { id: s.SessionId, name: s.Title, start: s.Start };}))
                 });
 
             return def.promise();

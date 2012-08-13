@@ -1,4 +1,5 @@
-|<html lang="en" manifest="/cache.manifest">
+//|<html lang="en" manifest="/cache.manifest">
+|<html lang="en">
 head
   meta(charset='utf-8')
   title That Conference - Mobile
@@ -14,8 +15,6 @@ head
 
   // jQuery Mobile
   script(src="//ajax.aspnetcdn.com/ajax/jquery.mobile/1.1.1/jquery.mobile-1.1.1.min.js")
-
-  != js("icanhaz")
 
   != js("mvc-router")
   != js("app")
@@ -33,5 +32,16 @@ body
 |<p><strong>Presenting</strong>: {{#People}}{{FirstName}} {{LastName}}{{/People}}</p>
 |<p>{{ Description }}</p>
 |</script>
+
+|<script id="sessionGroup" type="text/html">
+|{{#timeslots}}
+|<li data-role="list-divider">{{ start }}</li>
+|{{#sessions}}
+|<li><a href='#session' data-sessionid='{{id}}' class='navLink'>{{name}}</a></li>
+|{{/sessions}}
+|{{/timeslots}}
+|</script>
+
+!= js("icanhaz")
 
 |</html>

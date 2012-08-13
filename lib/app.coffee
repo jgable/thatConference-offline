@@ -12,8 +12,14 @@ app.set 'view engine', 'jade'
 app.get "/", (req, resp) ->
     resp.render "index"
 
+for session in data.Sessions
+    session.Start = new Date(parseInt(session.ScheduledDateTime.substr(6), 10))
+
 # Pre compute our simplified session list
 sessionList = ({ id: session.SessionId, name: session.Title, start: new Date(parseInt(session.ScheduledDateTime.substr(6), 10)) } for session in data.Sessions)
+
+# Pre compute our offline data
+
 
 app.get "/sessions/list", (req, resp) ->
     resp.json sessionList

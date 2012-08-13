@@ -1,6 +1,22 @@
 (function($, $app){
     "use strict";
 
+    var daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        formatDate = function(d) {
+            // Date Time Formatting in javascript is so awesome.
+            var min = d.getMinutes(),
+                hr = d.getHours(),
+                meridian = hr < 12 ? "AM" : "PM";
+
+            hr = hr % 12;
+            if (hr === 0) {
+                hr = 12;
+            }
+                
+            min = min < 10 ? "0" + min : "" + min;
+            return daysOfWeek[d.getDay()] + ", " + hr + ":" + min + " " + meridian;
+        };
+
     // Home Page
     var HomePage = function() {
         this.init = false;
@@ -9,6 +25,7 @@
     HomePage.prototype = {
         // Handle the initial creation of the jQuery Mobile page
         create: function($page) {
+            ich.grabTemplates();
             var that = this;
 
             this.$sessionList = $page.find("#sessionList");
@@ -63,24 +80,12 @@
                    this.$offlineToggle.val(mode);
                    this.$offlineToggle.slider("refresh");
                 }
-            } 
-
-            /*
-            if(this.$offlineToggle.val() !== mode) {
-               this.$offlineToggle.val(mode);
-               this.$offlineToggle.slider("refresh");
             }
-            */
-            
         },
 
         // Load sessions from our session provider and fill our listview with them
         loadSessions: function() {
             var $ul = this.$sessionList,
-                makeItem = function(session) {
-                    // TODO: Templating library
-                    $ul.append("<li><a href='#session' data-sessionid='" + session.id + "' class='navLink'>" + session.name + "</a></li>")
-                },
                 that = this;
 
             $app.helpers.showLoady();
@@ -89,9 +94,30 @@
                 .getList()
                 .always($app.helpers.hideLoady)
                 .then(function(sessions) {
-                    $.each(sessions, function() {
-                        makeItem(this);
+                    var grouped = {},
+                        templData = [],
+                        resultHtml;
+
+                    // Sort by date
+                    sessions.sort(function(a, b) {
+                        return (new Date(a.start)) - (new Date(b.start));
                     });
+
+                    // Group by day
+                    $.each(sessions, function() {
+                        grouped[this.start] = grouped[this.start] || [];
+                        grouped[this.start].push(this)
+                    });
+
+                    // Aggregate for our listview
+                    $.each(grouped, function(k, v) {
+                        templData.push({ start: formatDate(new Date(k)), sessions: v});
+                    });
+
+                    // Get template html from grouped data
+                    resultHtml = ich.sessionGroup({ timeslots: templData });
+                    $ul.find("li").remove();
+                    $ul.append(resultHtml);
 
                     $ul.listview("refresh");
                 }, function() {
@@ -102,9 +128,7 @@
 
     $app.pages.home = new HomePage();
 
-    // TODO: Session Page
-
-    var SessionPage = function() {}
+    var SessionPage = function() {};
 
     SessionPage.prototype = {
         create: function($page) {
@@ -142,8 +166,6 @@
                 .always($app.helpers.hideLoady)
                 .then(function(session) {
 
-                    // TODO: Template and more detail
-                    //detailHtml = "<h2>" + session.Title + "</h2><p>" + session.Description + "</p>";
                     detailHtml = ich.sessionDetail(session);
 
                     that.$title.text(session.Title);
