@@ -20,7 +20,7 @@
             return def.promise();
         }
         // TODO: Could have other kinds, like indexedDb and webSql
-    }
+    };
 
     $app.offline = {
         hasCacheManifest: function() {
